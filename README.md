@@ -1,35 +1,62 @@
-Feature: Add a product to the cart
-Scenario: User adds a product to the cart
-Given User is logged in
-When User adds a product to the cart
-Then The cart should show the correct number of items
+package jpetstoreUtility;
+
+import java.io.File;
+import java.io.IOException;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
+import org.openqa.selenium.WebDriver;
+import org.testng.ITestResult;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.AfterSuite;
+import org.testng.annotations.BeforeSuite;
+import com.google.common.io.Files;
+import com.relevantcodes.extentreports.ExtentReports;
+import com.relevantcodes.extentreports.ExtentTest;
+import com.relevantcodes.extentreports.LogStatus;
+
+public class screenshottestReport extends jpetstorelog4j {
+	public static ExtentReports extent;
+	public static ExtentTest test; 
+	public static WebDriver driver;
+	@AfterMethod
+	public void getResult(ITestResult result) throws IOException
+	{
+	if(result.getStatus() == ITestResult.FAILURE)
+	{
+	test.log(LogStatus.FAIL, "Test is failed");
+	  File scrFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
+	  Files.copy(scrFile, new File("C:\\Users\\Administrator\\Desktop\\Selenium\\Selenium demo\\jpetstore\\Screenshots\\failed" + result.getName() + ".jpeg"));
+	}
+	else if(result.getStatus() == ITestResult.SUCCESS)
+	{
+	test.log(LogStatus.PASS, "Test is pass");
+	}
+	}
+	@BeforeSuite
+	public void beforeSuite() 
+	{
+	extent = new ExtentReports ("C:\\Users\\Administrator\\Desktop\\Selenium\\Selenium demo\\jpetstore\\TestResults\\testreport.html", true);
+	}
+	@AfterSuite
+	public void afterSuite() 
+	{
+	extent.flush();
+	} 
+}
+package jpetstoreUtility;
+
+import org.apache.log4j.Logger;
+
+public class jpetstorelog4j {
+static Logger log = Logger.getLogger(jpetstorelog4j.class.getName()); 
 
 
-Feature: Checkout Process on SauceDemo
-Scenario: User completes checkout successfully
-Given User is in homepage
-When User adds  product to  cart
-And User proceeds to checkout
-And User enters shipping details
-And User confirms the order
-Then User should see the order confirmation message
+	public  void writeLog(String msg)
 
-Feature: Login to SauceDemo
-Scenario: User logs in with valid credentials
-Given User is on the SauceDemo login page
-When User enters valid username and password
-And Clicks on the login button
-Then User should be navigated to the Products Page
+	{
 
-Scenario: User tries to log in with invalid credentials
-Given User is on the SauceDemo login page
-When User enters an invalid username and password
-And Clicks on the login button
-Then User should see an error message
+		log.info(msg);
 
-Feature: Verify Products Page
+	}
 
-Scenario: Check if all products are displayed
-Given User is logged into SauceDemo
-When User is on the Products Page
-Then All products should be displayed correctly
+}
