@@ -1,12 +1,9 @@
-@checkout
-Feature: Checkout Process on SauceDemo
-Scenario: User completes checkout successfully
-Given User is in homepage
-When User adds  product to  cart
-And User proceeds to checkout
-And User enters shipping details
-And User confirms the order
-Then User should see the order confirmation message
+Feature: Add a product to the cart
+Scenario: User adds a product to the cart
+Given User is logged in
+When User adds a product to the cart
+Then The cart should show the correct number of items
+
 
 Feature: Checkout Process on SauceDemo
 Scenario: User completes checkout successfully
