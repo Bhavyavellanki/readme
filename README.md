@@ -1,30 +1,25 @@
 WebDriver driver;
-    WebElement username,password,login, errormessage;
-    public loginpage(WebDriver driver) {
+    WebElement title,products,addtocart,cartbadge; 
+    public productpage(WebDriver driver) {
         this.driver = driver;
     }
 
-    public void enterUsername(String uname) {
-    	username= driver.findElement(By.id("user-name"));
-        username.sendKeys(uname);
-       
+    public String getTitle() {
+        title =  driver.findElement(By.className("title"));
+    	return title.getText();
     }
 
-    public void enterPassword(String pword) {
-        password = driver.findElement(By.id("password"));
-        password.sendKeys(pword);
+    public int getProductCount() {
+    	List<WebElement> products = driver.findElements(By.className("inventory_item"));
+        return products.size();
     }
 
-    public void clickLoginButton() {
-       login = driver.findElement(By.id("login-button"));
-       login.click();
+    public void addFirstProductToCart() {
+    	addtocart = driver.findElement(By.xpath("//button[contains(text(), 'Add to cart')]"));
+        addtocart.click();
     }
 
-    public boolean isErrorMessageDisplayed() {
-    	errormessage = driver.findElement(By.cssSelector(".error-message-container"));
-        return errormessage.isDisplayed();
-    }
-
-    public String getErrorMessage() {
-        return errormessage.getText();
+    public String getCartBadgeCount() {
+    	cartbadge = driver.findElement(By.className("shopping_cart_badge"));
+    	return cartbadge.getText();
     }
