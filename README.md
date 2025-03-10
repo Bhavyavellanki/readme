@@ -1,46 +1,38 @@
-WebDriver driver;
-	loginpage login;
-	productpage products;
-	checkoutpage checkout;
-	@Given("User is in homepage")
-	public void user_is_in_homepage() {
-		driver = new ChromeDriver();
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
-        driver.get("https://www.saucedemo.com/");
-        login = new loginpage(driver);
-        login.enterUsername("standard_user");
-        login.enterPassword("secret_sauce");
-        login.clickLoginButton();    
-        products = new productpage(driver);
-	}
+public static ExtentReports extent;
+		public static ExtentTest test; 
+		public static WebDriver driver;
+		@AfterMethod
+		public void getResult(ITestResult result) throws IOException
+		{
+		if(result.getStatus() == ITestResult.FAILURE)
+		{
+		test.log(LogStatus.FAIL, "Test is failed");
+		  File scrFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
+		  Files.copy(scrFile, new File("C:\\Users\\Administrator\\Desktop\\Selenium\\Selenium demo\\jpetstore\\Screenshots\\failed" + result.getName() + ".jpeg"));
+		}
+		else if(result.getStatus() == ITestResult.SUCCESS)
+		{
+		test.log(LogStatus.PASS, "Test is pass");
+		}
+		}
+		@BeforeSuite
+		public void beforeSuite() 
+		{
+		extent = new ExtentReports ("C:\\Users\\Administrator\\Desktop\\Selenium\\Selenium demo\\jpetstore\\TestResults\\testreport.html", true);
+		}
+		@AfterSuite
+		public void afterSuite() 
+		{
+		extent.flush();
+		} 
+  public class log4j {
+	protected static Logger log = Logger.getLogger(log4j.class.getName()); 
 
-	@When("User adds  product to  cart")
-	public void user_adds_product_to_cart() {
-		products.addFirstProductToCart();
-		
-	}
 
-	@When("User proceeds to checkout")
-	public void user_proceeds_to_checkout() {
-		checkout = new checkoutpage(driver);
-		checkout.goToCart();
-		checkout.clickCheckout();
-	}
-	@When("User enters shipping details")
-	public void user_enters_shipping_details() throws InterruptedException {
-		checkout.enterCheckoutDetails("Bhavya", "Sree", "12345");
-	    Thread.sleep(2000);
-	}
+	public  void writeLog(String msg)
 
-	@When("User confirms the order")
-	public void user_confirms_the_order() {
-		checkout.completePurchase();
-	}
+	{
 
-	@Then("User should see the order confirmation message")
-	public void user_should_see_the_order_confirmation_message() throws InterruptedException {
-	    Thread.sleep(2000);
-	    assertEquals("Thank you for your order!", checkout.getConfirmationMessage());
-	    System.out.println("Order completed successfully: ");
-	    driver.quit();    	
+		log.info(msg);
+
 	}
