@@ -2,103 +2,46 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
-import java.util.List;
+import org.openqa.selenium.interactions.Actions;
+import org.testng.Assert;
 
-public class JPetStoreAutomation {
+public class ContextMenuTest {
     public static void main(String[] args) {
-        // Set the path for the ChromeDriver
+        // Set up WebDriver (Ensure you have chromedriver.exe in your system path)
         System.setProperty("webdriver.chrome.driver", "path/to/chromedriver");
-        
-        // Initialize WebDriver
         WebDriver driver = new ChromeDriver();
-        
+
         try {
-            // Step 1: Open the URL
-            driver.get("https://petstore.octoperf.com/");
-            
-            // Step 2: Verify the welcome text
-            WebElement welcomeText = driver.findElement(By.xpath("//h2[text()='Welcome to JPetStore 6']"));
-            if (welcomeText.isDisplayed()) {
-                System.out.println("Welcome text is present.");
-            }
-            
-            // Step 3: Click on 'Enter the store' link
-            driver.findElement(By.linkText("Enter the Store")).click();
-            
-            // Step 4: Verify navigation to the welcome page
-            if (driver.getTitle().contains("JPetStore")) {
-                System.out.println("Successfully navigated to the welcome page.");
-            }
-            
-            // Step 5: Count the number of links on the page
-            List<WebElement> links = driver.findElements(By.tagName("a"));
-            System.out.println("Number of links on the page: " + links.size());
-            
-            // Step 6: Click on 'Dogs' link
-            driver.findElement(By.xpath("//a[contains(text(),'Dogs')]")) .click();
-            
-            // Step 7: Verify the number of rows and columns in the table
-            List<WebElement> rows = driver.findElements(By.xpath("//table/tbody/tr"));
-            List<WebElement> cols = driver.findElements(By.xpath("//table/tbody/tr[1]/td"));
-            System.out.println("Number of rows: " + rows.size());
-            System.out.println("Number of columns: " + cols.size());
-            
-            // Step 8: Store the product ID of "Poodle"
-            WebElement poodleIdElement = driver.findElement(By.xpath("//td[contains(text(),'Poodle')]/preceding-sibling::td[1]"));
-            String poodleId = poodleIdElement.getText();
-            System.out.println("Poodle Product ID: " + poodleId);
-            
-            // Step 9: Click on "K9-PO-02"
-            driver.findElement(By.xpath("//a[contains(text(),'K9-PO-02')]")).click();
-            
-            // Step 10: Ensure the same product ID appears in the new page
-            WebElement productIdVerify = driver.findElement(By.xpath("//td[contains(text(),'K9-PO-02')]"));
-            if (productIdVerify.isDisplayed()) {
-                System.out.println("Product ID matches");
-            }
-            
-            // Step 11: Verify the price is $18.50
-            WebElement priceElement = driver.findElement(By.xpath("//td[contains(text(),'$18.50')]"));
-            if (priceElement.isDisplayed()) {
-                System.out.println("Price is correctly displayed as $18.50");
-            }
-            
-            // Step 12: Click on 'Add to Cart' button
-            driver.findElement(By.xpath("//a[contains(text(),'Add to Cart')]")).click();
-            
-            // Step 13: Ensure the default quantity is 1
-            WebElement quantityElement = driver.findElement(By.xpath("//input[@name='EST-16' and @value='1']"));
-            if (quantityElement.isDisplayed()) {
-                System.out.println("Default quantity is 1.");
-            }
+            // Step 1: Navigate to the URL
+            driver.get("https://swisnl.github.io/jQuery-contextMenu/demo.html");
+
+            // Step 2: Validate page title
+            String pageTitle = driver.getTitle();
+            Assert.assertTrue(pageTitle.contains("jQuery contextMenu"), "Page title verification failed!");
+
+            // Step 3: Perform double-click on the demo gallery
+            WebElement demoElement = driver.findElement(By.xpath("//span[text()='right click me']"));
+            Actions actions = new Actions(driver);
+            actions.doubleClick(demoElement).perform();
+
+            // Validation 2: Check if double-click action performed successfully
+            // (This depends on the behavior after double-click, modify as needed)
+            System.out.println("Double click action performed successfully");
+
+            // Step 4: Perform right-click (context click)
+            actions.contextClick(demoElement).perform();
+
+            // Validation 3: Check if context click action worked
+            WebElement contextMenu = driver.findElement(By.cssSelector(".context-menu-list"));
+            Assert.assertTrue(contextMenu.isDisplayed(), "Context menu did not appear!");
+
+            System.out.println("Right-click action performed successfully");
+
+        } catch (Exception e) {
+            e.printStackTrace();
         } finally {
             // Close the browser
             driver.quit();
         }
     }
-} 
-
-public static void main(String[] args) {
-    
-    int num = 3553, reversedNum = 0, remainder;
-    
-    // store the number to originalNum
-    int originalNum = num;
-    
-    // get the reverse of originalNum
-    // store it in variable
-    while (num != 0) {
-      remainder = num % 10;
-      reversedNum = reversedNum * 10 + remainder;
-      num /= 10;
-    }
-    
-    // check if reversedNum and originalNum are equal
-    if (originalNum == reversedNum) {
-      System.out.println(originalNum + " is Palindrome.");
-    }
-    else {
-      System.out.println(originalNum + " is not Palindrome.");
-    }
-  }
 }
