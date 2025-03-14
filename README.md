@@ -1,12 +1,26 @@
-@Given("User is on the welcome page")
-	public void user_is_on_the_welcome_page() {
-	   System.out.println("user is on welcome page");
-	}
-	@When("User clicks on Enter The Store")
-	public void user_clicks_on_enter_the_store() {
-		 System.out.println("user clicks on enter store");
-	}
-	@Then("User should be navigated to homepage")
-	public void user_should_be_navigated_to_homepage() {
-		System.out.println("user navigates to homepage");  
-	}
+WebDriver driver;
+    WebElement signInLink, searchBox, petImage, search,selectCat;
+
+    public homepage(WebDriver driver) {
+        this.driver = driver;
+    }
+
+    public void clickSignIn() {
+        signInLink = driver.findElement(By.linkText("Sign In"));
+        signInLink.click();
+    }
+
+    public void searchForPet(String petName) {
+        searchBox = driver.findElement(By.name("keyword"));
+        searchBox.sendKeys(petName);
+        WebElement search = driver.findElement(By.name("searchProducts"));
+        search.click();
+    }
+    public void selectCat() {
+    	selectCat = driver.findElement(By.xpath("//img[@src='../images/cats_icon.gif']"));
+    	selectCat.click();
+    }
+    public void clickOnPetCategory(String petCategory) {
+        WebElement petImage = driver.findElement(By.xpath("//img[contains(@src, '" + petCategory.toLowerCase() + "')]"));
+        petImage.click();
+    }
