@@ -1,11 +1,24 @@
- WebDriver driver;
-    WebElement enterStore;
+public static ExtentReports extent;
+    public static ThreadLocal<ExtentTest> logger = new ThreadLocal<>();
 
-    public welcomepage(WebDriver driver) {
-        this.driver = driver;
+    static
+    {
+        extent = new ExtentReports("C:\\Users\\BHAVYA\\Desktop\\Selenium Prac\\Selenium demo\\Mock\\Reports\\UpdatedTestReport.html", true);
     }
 
-    public void clickEnterStore() {
-        enterStore = driver.findElement(By.linkText("Enter the Store"));
-        enterStore.click();
+    public static void startTest(String testName) 
+    {
+        logger.set(extent.startTest(testName));
+    }
+
+    public static void endTest() 
+    {
+        extent.endTest(logger.get());
+        extent.flush();
+    }
+    @AfterSuite
+    public void closeReport() 
+    {
+    	
+    	extent.close();
     }
