@@ -1,20 +1,12 @@
-@Given("User is signed in")
-	public void user_is_signed_in() {
-		System.out.println("user signs in");
+@Given("User is on the welcome page")
+	public void user_is_on_the_welcome_page() {
+	   System.out.println("user is on welcome page");
 	}
-	@When("User adds a pet to cart")
-	public void user_adds_a_pet_to_cart() {
-		System.out.println("adds a product");
+	@When("User clicks on Enter The Store")
+	public void user_clicks_on_enter_the_store() {
+		 System.out.println("user clicks on enter store");
 	}
-	@When("User proceeds to checkout")
-	public void user_proceeds_to_checkout() {
-		System.out.println("proceeds to checkout");
-	}
-	@When("User confirms the order")
-	public void user_confirms_the_order() {
-		 System.out.println("confirms order");
-	}
-	@Then("User should see an order confirmation page")
-	public void user_should_see_an_order_confirmation_page() {
-	    System.out.println("order confirmed");
+	@Then("User should be navigated to homepage")
+	public void user_should_be_navigated_to_homepage() {
+		System.out.println("user navigates to homepage");  
 	}
