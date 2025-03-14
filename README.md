@@ -1,7 +1,5 @@
-Feature: Checkout Process
-Scenario: Complete checkout process
-Given User is signed in
-When User adds a pet to cart  
-And User proceeds to checkout
-And User confirms the order
-Then User should see an order confirmation page
+Feature: Home Page Navigation
+Scenario: Verify the homepage loads correctly
+Given User is on the welcome page
+When User clicks on Enter The Store
+Then User should be navigated to homepage
