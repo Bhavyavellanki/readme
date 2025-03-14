@@ -1,22 +1,11 @@
  WebDriver driver;
-    WebElement usernameField, passwordField, signInButton, errorMessage;
+    WebElement enterStore;
 
-    public Signinpage(WebDriver driver) {
+    public welcomepage(WebDriver driver) {
         this.driver = driver;
     }
 
-    public void enterUsername(String userId) {
-        usernameField = driver.findElement(By.name("username"));
-        usernameField.clear();
-        usernameField.sendKeys(userId);
-    }
-
-    public void enterPassword(String password) {
-        passwordField = driver.findElement(By.name("password"));
-        passwordField.sendKeys(password);
-    }
-
-    public void clickSignIn() {
-        signInButton = driver.findElement(By.name("signon"));
-        signInButton.click();
+    public void clickEnterStore() {
+        enterStore = driver.findElement(By.linkText("Enter the Store"));
+        enterStore.click();
     }
