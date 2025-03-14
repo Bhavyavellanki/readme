@@ -1,24 +1,14 @@
-public static ExtentReports extent;
-    public static ThreadLocal<ExtentTest> logger = new ThreadLocal<>();
-
-    static
+public static void captureScreenshot(WebDriver driver, String testName) 
     {
-        extent = new ExtentReports("C:\\Users\\BHAVYA\\Desktop\\Selenium Prac\\Selenium demo\\Mock\\Reports\\UpdatedTestReport.html", true);
-    }
-
-    public static void startTest(String testName) 
-    {
-        logger.set(extent.startTest(testName));
-    }
-
-    public static void endTest() 
-    {
-        extent.endTest(logger.get());
-        extent.flush();
-    }
-    @AfterSuite
-    public void closeReport() 
-    {
-    	
-    	extent.close();
+        File srcFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
+        String destPath = "C:\\Users\\BHAVYA\\Desktop\\Selenium Prac\\Selenium demo\\Mock\\Reports\\Screenshot" + testName + ".png";
+        try 
+        {
+            Files.copy(srcFile, new File(destPath));
+            ReportGenerator.logger.get().log(LogStatus.INFO, "Screenshot saved: ");
+        } 
+        catch (IOException e) 
+        {
+            e.printStackTrace();  
+        }
     }
