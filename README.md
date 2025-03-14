@@ -1,12 +1,16 @@
-@Given("I navigate to the home page")
-	public void i_navigate_to_the_home_page() {
-	    System.out.println("navigates to home page");
-	}
-	@When("I search for a pet")
-	public void i_search_for_a_pet() {
-		System.out.println("searches for a pet");
-	}
-	@Then("I should see a list of pet results")
-	public void i_should_see_a_list_of_pet_results() {
-		System.out.println("list of pets are displayed");
-	}
+Feature: Shopping Cart Functionality
+Scenario: Add items to the cart
+Given User navigates to a product page
+When User adds product to the cart
+Then The product should appear in the shopping cart
+
+Scenario: Remove items from the cart
+Given User has items in the shopping cart
+When User removes an item from the cart
+Then The item should be removed from the cart
+
+Scenario: Update product quantity in the cart
+Given User have items in the shopping cart
+When User updates the quantity of a product
+Then Cart should reflect the updated quantity
+
