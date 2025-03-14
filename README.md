@@ -1,26 +1,22 @@
-WebDriver driver;
-    WebElement signInLink, searchBox, petImage, search,selectCat;
+ WebDriver driver;
+    WebElement usernameField, passwordField, signInButton, errorMessage;
 
-    public homepage(WebDriver driver) {
+    public Signinpage(WebDriver driver) {
         this.driver = driver;
     }
 
-    public void clickSignIn() {
-        signInLink = driver.findElement(By.linkText("Sign In"));
-        signInLink.click();
+    public void enterUsername(String userId) {
+        usernameField = driver.findElement(By.name("username"));
+        usernameField.clear();
+        usernameField.sendKeys(userId);
     }
 
-    public void searchForPet(String petName) {
-        searchBox = driver.findElement(By.name("keyword"));
-        searchBox.sendKeys(petName);
-        WebElement search = driver.findElement(By.name("searchProducts"));
-        search.click();
+    public void enterPassword(String password) {
+        passwordField = driver.findElement(By.name("password"));
+        passwordField.sendKeys(password);
     }
-    public void selectCat() {
-    	selectCat = driver.findElement(By.xpath("//img[@src='../images/cats_icon.gif']"));
-    	selectCat.click();
-    }
-    public void clickOnPetCategory(String petCategory) {
-        WebElement petImage = driver.findElement(By.xpath("//img[contains(@src, '" + petCategory.toLowerCase() + "')]"));
-        petImage.click();
+
+    public void clickSignIn() {
+        signInButton = driver.findElement(By.name("signon"));
+        signInButton.click();
     }
