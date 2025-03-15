@@ -1,15 +1,20 @@
- driver = new ChromeDriver();
-		   ReportGenerator.startTest("Login Test");
-		   driver.get("https://www.saucedemo.com/");
-		   log.info("Launching browser");
-		   ReportGenerator.logger.get().log(com.relevantcodes.extentreports.LogStatus.INFO, "Navigated to Swag Labs login page.");
-		   driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
-		   login = new loginpage(driver); 
-		   log.info("Login page opened");
-    }
-	@When("User enters valid username and password")
-	public void user_enters_valid_username_and_password() throws InterruptedException, IOException {	
-		 File file = new File("C:\\Users\\BHAVYA\\Desktop\\Selenium Prac\\testdata.xlsx");
+private WebDriver driver;
+	homepage home;
+	signinpage signin;
+	@Given("User is on the signin page")
+	public void user_is_on_the_signin_page() throws InterruptedException {
+		driver = new EdgeDriver();
+		driver.get("https://petstore.octoperf.com/actions/Catalog.action");
+		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+		home = new homepage(driver);
+	    Thread.sleep(2000);
+	    home.clickSignIn();
+	    System.out.println("signinpage");
+	}
+	@When("User enter valid username and password")
+	public void user_enter_valid_username_and_password() throws InterruptedException, IOException {
+		signin = new signinpage(driver);
+		File file = new File("C:\\Users\\BHAVYA\\Desktop\\Selenium Prac\\testdata.xlsx");
         FileInputStream inputStream = new FileInputStream(file);
 	     XSSFWorkbook workbook = new XSSFWorkbook(inputStream);
 	     Sheet sheet = workbook.getSheet("Sheet1");
@@ -20,47 +25,25 @@
 		        	String values = row.getCell(j).getStringCellValue();
 		        	if(j == 0)
 		        	{
-		        		driver.findElement(By.id("user-name")).clear();
-		        		driver.findElement(By.id("user-name")).sendKeys(values);
+		        		driver.findElement(By.name("username")).clear();
+		        		driver.findElement(By.name("username")).sendKeys(values);
 		        	}
 		        	if(j == 1)
 		        	{
-		        		driver.findElement(By.id("password")).clear();
-		        		driver.findElement(By.id("password")).sendKeys(values);
+		        		driver.findElement(By.name("password")).clear();
+		        		driver.findElement(By.name("password")).sendKeys(values);
 		        	}
 	        }
 	      workbook.close(); }
-	    }
-	@When("Clicks on the login button")
-	public void clicks_on_the_login_button() {
-		 login.clickLoginButton();
-		 products = new productspage(driver);	 
 	}
-	@Then("User should be navigated to the Products Page")
-	public void user_should_be_navigated_to_the_Products_Page() 
-	{
-		try {
-           Thread.sleep(2000);
-           assertEquals("Products", products.getTitle());
-           System.out.println("Login Successful - Products Page displayed");       
-       } catch (Exception e) {
-           assertTrue(login.isErrorMessageDisplayed());
-           System.out.println("Error message displayed: " + login.getErrorMessage());
-       } finally { 
-		driver.quit(); }
+	@When("User click the login button")
+	public void user_click_the_login_button() {
+		signin.clickSignIn();
+		System.out.println("clicks on login");
 	}
-	@When("User enters an invalid username and password")
-	public void user_enters_an_invalid_username_and_password() {
-	    login.enterUsername("invalid_user");
-	    login.enterPassword("wrong_password");
+	@Then("User should be redirected to my account page")
+	public void user_should_be_redirected_to_my_account_page() {
+		assertTrue(home.welcomemsg());
+		System.out.println("welcome message appears");
+		driver.quit();
 	}
-	@Then("User should see an error message")
-	public void user_should_see_an_error_message() throws InterruptedException {
-		Thread.sleep(2000);
-	    assertTrue(login.isErrorMessageDisplayed());
-	    assertEquals("Epic sadface: Username and password do not match any user in this service", login.getErrorMessage());
-	    System.out.println("Error message displayed: " +login.getErrorMessage());
-	    TakeScreenshot.captureScreenshot(driver, "LoginFailed");
-	    ReportGenerator.endTest();
-	    driver.quit();
-	    	}
