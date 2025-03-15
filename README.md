@@ -1,49 +1,17 @@
-package pages;
+Feature: Shopping flow in Demo Web Shop
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-
-public class ShoppingCartPage {
-    WebDriver driver;
-    WebElement unitPrice, productName, quantity, checkoutButton, termsOfServiceCheckbox, termsWarningBox, closePopupButton;
-
-    public ShoppingCartPage(WebDriver driver) {
-        this.driver = driver;
-    }
-
-    public String getUnitPrice() {
-        unitPrice = driver.findElement(By.xpath("//span[@class='product-unit-price']"));
-        return unitPrice.getText();
-    }
-
-    public String getProductName() {
-        productName = driver.findElement(By.xpath("//a[@class='product-name']"));
-        return productName.getText();
-    }
-
-    public String getQuantity() {
-        quantity = driver.findElement(By.xpath("//input[contains(@name,'itemquantity')]"));
-        return quantity.getAttribute("value");
-    }
-
-    public void clickCheckout() {
-        checkoutButton = driver.findElement(By.xpath("//button[contains(@id,'checkout')]"));
-        checkoutButton.click();
-    }
-
-    public boolean isErrorMessageDisplayed() {
-        termsWarningBox = driver.findElement(By.xpath("//div[@id='terms-of-service-warning-box']"));
-        return termsWarningBox.isDisplayed();
-    }
-
-    public void closeWarningPopup() {
-        closePopupButton = driver.findElement(By.xpath("//button[@class='ui-button ui-corner-all ui-widget']"));
-        closePopupButton.click();
-    }
-
-    public void acceptTermsOfService() {
-        termsOfServiceCheckbox = driver.findElement(By.xpath("//input[@id='termsofservice']"));
-        termsOfServiceCheckbox.click();
-    }
-}
+  Scenario: User purchases a smartphone from Electronics
+    Given the user opens the demo webshop application
+    Then the user should see the correct page title
+    When the user navigates to Electronics and then Cell Phones
+    And the user selects a smartphone
+    Then the user should see the correct price
+    And the shopping cart should be empty
+    When the user adds the product to cart
+    Then the shopping cart should show one item
+    When the user goes to the cart
+    And the user attempts to checkout
+    Then an error message should appear
+    When the user accepts terms of service
+    And the user attempts to checkout again
+    Then the user should proceed with the checkout process
