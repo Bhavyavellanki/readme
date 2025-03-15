@@ -1,25 +1,28 @@
-private WebDriver driver;
-	homepage home;
+WebDriver driver;
 	catscategorypage catspage;
-	@Given("user in the PetStore HOME page")
-	public void user_in_the_pet_store_home_page() throws InterruptedException {
+	persiancatpage persiancat;
+	@Given("User is in Cats Page")
+	public void user_is_in_cats_page() {
 		driver = new EdgeDriver();
-		driver.get("https://petstore.octoperf.com/actions/Catalog.action");
-		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
-		home = new homepage(driver);
-	    Thread.sleep(2000);
-	    System.out.println("homepage");
-	}
-	@When("User selects the CATS category")
-	public void user_selects_the_cats_category() {
-		home.selectCat();
-		System.out.println("selects cats category");
 		catspage = new catscategorypage(driver);
+		catspage.navigateToCatsCategory();
+		System.out.println("cat page");
 	}
-	@Then("User reaches the cats page with list of available cats with the product id, product name")
-	public void user_reaches_the_cats_page_with_list_of_available_cats_with_the_product_id_product_name() {
-		assertTrue(catspage.isCategoryDisplayed());
-		System.out.println("reaches cat page");
-		driver.quit();
+	@When("User clicks on the product Id of Persian Cat")
+	public void user_clicks_on_the_product_id_of_persian_cat() {
+		catspage.selectPersianCat();
+		System.out.println("selects persian cat");
 	}
-	
+	@Then("User is redirected to Persian Cat page")
+	public void user_is_redirected_to_persian_cat_page() {
+		persiancat = new persiancatpage(driver); // Initialize PersianCatPage
+	    boolean isPresent = false;
+	    try {
+	        isPresent = persiancat.persiancatpresent().isDisplayed();
+	        System.out.println("Persian Cat page is displayed.");
+	    } catch (NoSuchElementException e) {
+	        System.out.println("Persian Cat page is NOT displayed.");
+	    } finally { driver.quit(); }
+	    assertTrue("Persian Cat page should be displayed", isPresent);
+		System.out.println("persian cat page");
+	}
