@@ -4,36 +4,46 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
-public class ProductDetailsPage {
+public class ShoppingCartPage {
     WebDriver driver;
-    WebElement productPrice, addToCartButton, shoppingCartLink, cartQuantity, productName;
+    WebElement unitPrice, productName, quantity, checkoutButton, termsOfServiceCheckbox, termsWarningBox, closePopupButton;
 
-    public ProductDetailsPage(WebDriver driver) {
+    public ShoppingCartPage(WebDriver driver) {
         this.driver = driver;
     }
 
-    public String getProductPrice() {
-        productPrice = driver.findElement(By.xpath("//span[@itemprop='price' and contains(@class, 'price-value')]"));
-        return productPrice.getText();
-    }
-
-    public void addToCart() {
-        addToCartButton = driver.findElement(By.xpath("//input[contains(@id,'add-to-cart-button')]"));
-        addToCartButton.click();
-    }
-
-    public String getCartQuantity() {
-        cartQuantity = driver.findElement(By.xpath("//span[@class='cart-qty']"));
-        return cartQuantity.getText();
-    }
-
-    public void goToCart() {
-        shoppingCartLink = driver.findElement(By.xpath("//span[@class='cart-label' and contains(text(),'Shopping cart')]"));
-        shoppingCartLink.click();
+    public String getUnitPrice() {
+        unitPrice = driver.findElement(By.xpath("//span[@class='product-unit-price']"));
+        return unitPrice.getText();
     }
 
     public String getProductName() {
-        productName = driver.findElement(By.xpath("//h1[@itemprop='name']"));
+        productName = driver.findElement(By.xpath("//a[@class='product-name']"));
         return productName.getText();
+    }
+
+    public String getQuantity() {
+        quantity = driver.findElement(By.xpath("//input[contains(@name,'itemquantity')]"));
+        return quantity.getAttribute("value");
+    }
+
+    public void clickCheckout() {
+        checkoutButton = driver.findElement(By.xpath("//button[contains(@id,'checkout')]"));
+        checkoutButton.click();
+    }
+
+    public boolean isErrorMessageDisplayed() {
+        termsWarningBox = driver.findElement(By.xpath("//div[@id='terms-of-service-warning-box']"));
+        return termsWarningBox.isDisplayed();
+    }
+
+    public void closeWarningPopup() {
+        closePopupButton = driver.findElement(By.xpath("//button[@class='ui-button ui-corner-all ui-widget']"));
+        closePopupButton.click();
+    }
+
+    public void acceptTermsOfService() {
+        termsOfServiceCheckbox = driver.findElement(By.xpath("//input[@id='termsofservice']"));
+        termsOfServiceCheckbox.click();
     }
 }
