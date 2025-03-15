@@ -1,14 +1,25 @@
-public static void captureScreenshot(WebDriver driver, String testName) 
-    {
-        File srcFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
-        String destPath = "C:\\Users\\BHAVYA\\Desktop\\Selenium Prac\\Selenium demo\\Mock\\Reports\\Screenshot" + testName + ".png";
-        try 
-        {
-            Files.copy(srcFile, new File(destPath));
-            ReportGenerator.logger.get().log(LogStatus.INFO, "Screenshot saved: ");
-        } 
-        catch (IOException e) 
-        {
-            e.printStackTrace();  
-        }
+WebDriver driver;
+    WebElement productName, cat1,cat2, cartTable;
+
+    public catscategorypage(WebDriver driver) {
+        this.driver = driver;
     }
+
+    public void navigateToCatsCategory() {
+        driver.get("https://petstore.octoperf.com/actions/Catalog.action?viewCategory=&categoryId=CATS");
+    }
+
+    public boolean isCategoryDisplayed() {
+        productName = driver.findElement(By.xpath("//h2[text()='Cats']"));
+        return productName.isDisplayed();
+    }
+
+    public void selectManxCat() {
+        cat1 = driver.findElement(By.linkText("FL-DSH-01"));
+        cat1.click();
+    }
+
+    public void selectPersianCat() {
+    	cat2 = driver.findElement(By.linkText("FL-DLH-02"));
+        cat2.click();
+}
