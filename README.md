@@ -1,21 +1,15 @@
-private WebDriver driver;
-	homepage home;
-	@Given("I navigate to the main page")
-	public void i_navigate_to_the_main_page() {
-		driver = new EdgeDriver();
-		driver.get("https://petstore.octoperf.com/actions/Catalog.action");
-		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
-		home = new homepage(driver);
-	    System.out.println("navigates to home page");
-	}
-	 @When("I search for an invalid pet {string}")
-	    public void i_search_for_an_invalid_pet(String petName) {
-	        home.searchForPet(petName);
-	        System.out.println("Searches for an invalid pet: " + petName);
-	    }
-	 @Then("I should see a message indicating no results found")
-	 public void i_should_see_a_message_indicating_no_results_found() {
-	        System.out.println("'No results found' message is displayed.");
-	        driver.quit();
-	        assertTrue(false);      
-	 }
+Feature: User Registration
+
+  Scenario Outline: Register a new user on JPetStore
+    Given User should be on the Registration Page
+    When User enters User Information "<Username>" "<Password>" "<RepeatPassword>"
+    And User enters Account Information "<FirstName>" "<LastName>" "<Email>" "<Phone>" "<Address1>" "<Address2>" "<City>" "<State>" "<Zip>" "<Country>"
+    And User enters Profile Information "<Language>" "<Category>"
+    And User clicks on Save Account Information
+    Then User should be Registered Successfully
+    And User should be redirected to the home page of JPetstore
+
+Examples:
+   | Username  | Password   | RepeatPassword | FirstName | LastName  | Email             | Phone      | Address1 | Address2 | City          | State  | Zip    | Country | Language | Category |
+   | Bhavya123 | Bhavya@123 | Bhavya@123     | Vellanki  | Bhavya    | bhavya@gmail.com  | 7989710535 | Vizag    | Vizag    | Visakhapatnam | andhra | 522616 | India   | english  | DOGS     |
+
